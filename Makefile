@@ -1,5 +1,18 @@
+MANAGE = uv run manage.py
+
+.PHONY: run lint makemigrations migrate createsuperuser
+
 run:
-	uv run manage.py runserver
+	$(MANAGE) runserver
 
 lint:
 	uv run pre-commit run --all-files
+
+makemigrations:
+	$(MANAGE) makemigrations
+
+migrate:
+	$(MANAGE) migrate
+
+createsuperuser:
+	$(MANAGE) createsuperuser
