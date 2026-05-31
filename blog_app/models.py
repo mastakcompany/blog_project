@@ -41,4 +41,4 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return f'Пост: {self.title}'
+        return f'Статья: {self.title}'
