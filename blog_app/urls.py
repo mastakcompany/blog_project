@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.index, name='index_page'),
     path('posts/', views.posts_list, name='posts_list'),
     path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('request-debugger/', views.request_debugger, name='request_debugger'),
 ]
