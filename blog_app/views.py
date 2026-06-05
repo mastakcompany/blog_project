@@ -13,8 +13,12 @@ def posts_list(request):
 
     content = '<h1>Опубликованные статьи</h1><br><br>'
 
+    content += '<ul>'
+
     for post in posts:
-        content += f'<a href="/posts/{post.slug}/">{post.title}</a> ({post.created_at})<br>'
+        content += f'<li><a href="/posts/{post.slug}/">{post.title}</a> ({post.created_at})</li><br>'
+
+    content += '</ul>'
 
     return HttpResponse(content)
 
@@ -37,9 +41,12 @@ def category_list(request):
     categories = Category.objects.all()
 
     content = '<h1>Список всех категорий</h1><br><br>'
+    content += '<ul>'
 
     for category in categories:
-        content += f'<ul><a href="/categories/{category.id}/">{category.title}</a></ul>'
+        content += f'<li><a href="/categories/{category.id}/">{category.title}</a></li><br>'
+
+    content += '</ul>'
 
     return HttpResponse(content)
 
@@ -50,8 +57,12 @@ def category_detail(request, category_id):
 
     content = f'<h1>{category.title}</h1><br><br>'
 
+    content += '<ul>'
+
     for post in posts:
-        content += f'<a href="/posts/{post.slug}/">{post.title}</a> ({post.created_at})<br>'
+        content += f'<li><a href="/posts/{post.slug}/">{post.title}</a> ({post.created_at})</li><br>'
+
+    content += '</ul>'
 
     content += '<br><hr><br><a href="/categories/">Назад к категориям</a>'
 
