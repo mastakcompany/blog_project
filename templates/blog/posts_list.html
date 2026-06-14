@@ -1,23 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная страница - {{ block.super }}{% endblock %}
+{% block title %}Опубликованные статьи - {{ block.super }}{% endblock %}
 
 {% block content %}
 
   <div class="row">
     <!-- Левая колонка с приветствием и списком постов -->
     <div class="col-lg-8">
-      <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border">
-        <div class="container-fluid py-2">
-          <h1 class="display-5 fw-bold text-dark">Добро пожаловать в DevBlog!</h1>
-          <p class="col-md-12 fs-5 text-muted">
-            Здесь мы делимся интересными статьями о разработке программного обеспечения, архитектуре и технологиях
-            будущего. Приятного чтения!
-          </p>
-        </div>
-      </div>
-
-      <h2 class="mb-4 fw-bold">Последние публикации</h2>
+      <h2 class="mb-4 fw-bold">Опубликованные статьи</h2>
 
       {% for post in posts %}
         <article class="card mb-4 border-0 shadow-sm">
@@ -57,19 +47,6 @@
           Статьи ещё не опубликованы.
         </div>
       {% endfor %}
-    </div>
-
-    <!-- Правая колонка: Сайдбар с информацией -->
-    <div class="col-lg-4">
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-4">
-          <h4 class="fw-bold mb-3">О проекте</h4>
-          <p class="text-secondary mb-0">
-            Это учебный блог, разработанный в рамках практического курса по Django. Проект использует Django 5, менеджер
-            зависимостей UV и CSS-фреймворк Bootstrap 5.
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 
