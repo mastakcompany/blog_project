@@ -61,6 +61,25 @@
 
     <!-- Правая колонка: Сайдбар с информацией -->
     <div class="col-lg-4">
+      <!-- Форма поиска по статьям -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h4 class="fw-bold mb-3">Поиск</h4>
+          <form method="get" action="{% url 'blog:index_page' %}">
+            <div class="mb-3">
+              <label for="{{ search_form.query.id_for_label }}" class="form-label">
+                {{ search_form.query.label }}
+              </label>
+              {{ search_form.query }}
+              {% for error in search_form.query.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-dark w-100">Найти</button>
+          </form>
+        </div>
+      </div>
+
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
           <h4 class="fw-bold mb-3">О проекте</h4>
