@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 
 from blog_app.models import Post, Category
 
-from blog_app.forms import PostForm, SearchForm
+from blog_app.forms import PostForm, SearchForm, CategoryForm
 
 from slugify import slugify
 
@@ -74,3 +74,17 @@ def post_create(request):
         form = PostForm()
 
     return render(request, 'blog/post_create.html', context={'form': form})
+
+
+def category_create(request):
+    if request.method == 'POST':
+        form = CategoryForm(data=request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.slug = slugify(category.title)
+            category.save()
+            return redirect('blog:category_list')
+    else:
+        form = CategoryForm()
+
+    return render(request, 'blog/category_create.html', context={'form': form})
