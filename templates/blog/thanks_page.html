@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Спасибо за обращение — {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="bg-white p-5 rounded border shadow-sm text-center">
+        <div class="display-1 mb-3">✅</div>
+        <h1 class="display-5 fw-bold text-dark">Спасибо за обращение!</h1>
+        <p class="fs-5 text-muted mb-4">
+          Ваше сообщение успешно отправлено. Мы свяжемся с вами по указанной почте в ближайшее время.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="{% url 'blog:index_page' %}" class="btn btn-dark">На главную</a>
+          <a href="{% url 'feedback:feedback_page' %}" class="btn btn-outline-dark">Написать ещё</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
