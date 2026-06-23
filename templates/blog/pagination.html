@@ -1,0 +1,49 @@
+{# Переиспользуемый блок пагинации. #}
+{# Работает с контекстом Django ListView / Paginator: page_obj, paginator, is_paginated. #}
+{# Подключается так: {% include 'blog/pagination.html' %} #}
+{% if is_paginated %}
+  <nav aria-label="Навигация по страницам" class="mt-5">
+    <ul class="pagination justify-content-center">
+
+      <!-- Предыдущая страница -->
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" aria-label="Предыдущая">
+            &laquo;
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">&laquo;</span>
+        </li>
+      {% endif %}
+
+      <!-- Номера страниц -->
+      {% for num in paginator.page_range %}
+        {% if num == page_obj.number %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ num }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="{% querystring page=num %}">{{ num }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Следующая страница -->
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="{% querystring page=page_obj.next_page_number %}" aria-label="Следующая">
+            &raquo;
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">&raquo;</span>
+        </li>
+      {% endif %}
+
+    </ul>
+  </nav>
+{% endif %}
