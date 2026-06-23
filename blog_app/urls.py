@@ -5,9 +5,11 @@ app_name = 'blog'
 
 urlpatterns = [
     path('', views.index, name='index_page'),
-    path('posts/', views.posts_list, name='posts_list'),
-    path('posts/create/', views.post_create, name='post_create'),
-    path('posts/<slug:post_slug>/', views.post_detail, name='post_detail'),
+    path('posts/', views.PostListView.as_view(), name='posts_list'),
+    path('posts/create/', views.PostCreateView.as_view(), name='post_create'),
+    path('posts/<slug:post_slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('posts/<slug:post_slug>/edit/', views.PostUpdateView.as_view(), name='post_edit'),
+    path('posts/<slug:post_slug>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
     path('categories/', views.category_list, name='category_list'),
     path('categories/create/', views.category_create, name='category_create'),
     path('categories/<int:category_id>/', views.category_detail, name='category_detail'),

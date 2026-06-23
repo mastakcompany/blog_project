@@ -39,11 +39,15 @@
           <div>
             {% if post.category %}
               <a href="{% url 'blog:category_detail' post.category.id %}" class="btn btn-outline-primary">
-                Все из категории &raquo;{{ post.category.title }}&raquo;
+                Все из категории &laquo;{{ post.category.title }}&raquo;
               </a>
             {% endif %}
           </div>
-          <a href="{% url 'blog:posts_list' %}" class="btn btn-dark">Все статьи</a>
+          <div class="d-flex gap-2">
+            <a href="{% url 'blog:post_edit' post.slug %}" class="btn btn-outline-dark">✏️ Редактировать</a>
+            <a href="{% url 'blog:post_delete' post.slug %}" class="btn btn-outline-danger">🗑️ Удалить</a>
+            <a href="{% url 'blog:posts_list' %}" class="btn btn-dark">Все статьи</a>
+          </div>
         </div>
       </article>
     </div>
