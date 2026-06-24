@@ -2,11 +2,13 @@ from django.shortcuts import get_object_or_404
 
 from blog_app.models import Post, Category
 
-from blog_app.forms import PostForm, SearchForm, CategoryForm
+from blog_app.forms import PostForm, CategoryForm
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from django.urls import reverse_lazy
+
+from blog_app.mixins import StaffRequaredMixin, TitleMixin
 
 from slugify import slugify
 
@@ -28,22 +30,33 @@ from slugify import slugify
 #     return render(request, 'blog/index.html', context)
 
 
-class IndexView(ListView):
-    model = Post
-    template_name = 'blog/index.html'
-    context_object_name = 'posts'
+# class IndexView(ListView):
+#     model = Post
+#     template_name = 'blog/index.html'
+#     context_object_name = 'posts'
+#
+#     def get_queryset(self):
+#         queryset = Post.objects.filter(published=True)
+#         form = SearchForm(self.request.GET)
+#         if form.is_valid():
+#             query = form.cleaned_data.get('query')
+#             queryset = queryset.filter(title__icontains=query)
+#         return queryset[:5]
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['search_form'] = SearchForm(self.request.GET)
+#         return context
 
-    def get_queryset(self):
-        queryset = Post.objects.filter(published=True)
-        form = SearchForm(self.request.GET)
-        if form.is_valid():
-            query = form.cleaned_data.get('query')
-            queryset = queryset.filter(title__icontains=query)
-        return queryset[:5]
+
+class IndexView(TitleMixin, TemplateView):
+    template_name = 'blog/index.html'
+    title = 'Главная страница'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['search_form'] = SearchForm(self.request.GET)
+        context['latest_posts'] = Post.objects.filter(published=True).select_related('category', 'autor')[:5]
+        context['categories'] = Category.objects.all()
         return context
 
 
@@ -55,14 +68,15 @@ class IndexView(ListView):
 #     return render(request, 'blog/posts_list.html', context)
 
 
-class PostListView(ListView):
+class PostListView(TitleMixin, ListView):
     model = Post
     template_name = 'blog/posts_list.html'
     context_object_name = 'posts'
     paginate_by = 5
+    title = 'Список статей'
 
     def get_queryset(self):
-        return Post.objects.filter(published=True)
+        return Post.objects.filter(published=True).select_related('category', 'autor')
 
 
 # def post_detail(request, post_slug):
@@ -79,6 +93,9 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     slug_url_kwarg = 'post_slug'
+
+    def get_queryset(self, *args, **kwargs):
+        return Post.objects.select_related('category', 'autor')
 
 
 # def category_list(request):
@@ -141,11 +158,12 @@ class PostFormBase:
     success_url = reverse_lazy('blog:index_page')
 
 
-class PostCreateView(PostFormBase, CreateView):
+class PostCreateView(StaffRequaredMixin, PostFormBase, CreateView):
     template_name = 'blog/post_create.html'
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.title)
+        form.instance.autor = self.request.user
         return super().form_valid(form)
 
 
