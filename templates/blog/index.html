@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная страница - {{ block.super }}{% endblock %}
+{% block title %}{{ title }} - {{ block.super }}{% endblock %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
 
       <h2 class="mb-4 fw-bold">Последние публикации</h2>
 
-      {% for post in posts %}
+      {% for post in latest_posts %}
         <article class="card mb-4 border-0 shadow-sm">
           <div class="card-body p-4">
             <!-- Заголовок категории (если она есть) -->
@@ -61,22 +61,21 @@
 
     <!-- Правая колонка: Сайдбар с информацией -->
     <div class="col-lg-4">
-      <!-- Форма поиска по статьям -->
+      <!-- Категории -->
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
-          <h4 class="fw-bold mb-3">Поиск</h4>
-          <form method="get" action="{% url 'blog:index_page' %}">
-            <div class="mb-3">
-              <label for="{{ search_form.query.id_for_label }}" class="form-label">
-                {{ search_form.query.label }}
-              </label>
-              {{ search_form.query }}
-              {% for error in search_form.query.errors %}
-                <div class="text-danger small mt-1">{{ error }}</div>
-              {% endfor %}
-            </div>
-            <button type="submit" class="btn btn-dark w-100">Найти</button>
-          </form>
+          <h4 class="fw-bold mb-3">Категории</h4>
+          <div class="list-group list-group-flush">
+            {% for category in categories %}
+              <a href="{% url 'blog:category_detail' category.id %}"
+                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
+                📁 {{ category.title }}
+                <span class="badge bg-primary rounded-pill">{{ category.posts.count }}</span>
+              </a>
+            {% empty %}
+              <p class="text-muted mb-0">Категорий пока нет.</p>
+            {% endfor %}
+          </div>
         </div>
       </div>
 
