@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль {{ profile.user.username }} — {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="bg-white p-5 rounded border shadow-sm">
+        <!-- Ссылка на возврат назад -->
+        <a href="{% url 'blog:index_page' %}" class="text-decoration-none text-muted small">&larr; На главную</a>
+
+        <header class="mt-3 mb-4 d-flex align-items-center gap-3">
+          <!-- Аватар-заглушка с первой буквой имени -->
+          <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fw-bold"
+               style="width: 72px; height: 72px; font-size: 2rem;">
+            {{ profile.user.username|first|upper }}
+          </div>
+          <div>
+            <h1 class="h2 fw-bold text-dark mb-0">{{ profile.user.username }}</h1>
+            {% if profile.user.get_full_name %}
+              <p class="text-muted mb-0">{{ profile.user.get_full_name }}</p>
+            {% endif %}
+          </div>
+        </header>
+
+        <hr class="my-4">
+
+        <!-- Биография -->
+        <section class="mb-4">
+          <h5 class="fw-bold text-dark">Биография</h5>
+          {% if profile.bio %}
+            <p class="text-secondary fs-5 mb-0">{{ profile.bio|linebreaksbr }}</p>
+          {% else %}
+            <p class="text-muted fst-italic mb-0">Пользователь пока не рассказал о себе.</p>
+          {% endif %}
+        </section>
+
+        <!-- Контактные данные -->
+        <section class="mb-4">
+          <h5 class="fw-bold text-dark">Контакты</h5>
+          <ul class="list-group list-group-flush">
+            {% if profile.user.email %}
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <span class="text-muted">📧 Email</span>
+                <span class="fw-semibold">{{ profile.user.email }}</span>
+              </li>
+            {% endif %}
+            {% if profile.social_link %}
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                <span class="text-muted">🔗 Соц. сеть</span>
+                <a href="{{ profile.social_link }}" target="_blank" rel="noopener" class="fw-semibold text-decoration-none">
+                  {{ profile.social_link }}
+                </a>
+              </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <span class="text-muted">📅 Дата регистрации</span>
+              <span class="fw-semibold">{{ profile.user.date_joined|date:"d E Y" }}</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Панель управления -->
+        <div class="bg-light p-4 rounded border d-flex justify-content-end gap-2">
+          <a href="{% url 'blog:index_page' %}" class="btn btn-outline-dark">На главную</a>
+          <a href="{% url 'users:profile_update' %}" class="btn btn-dark">✏️ Редактировать профиль</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
