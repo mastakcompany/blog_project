@@ -8,9 +8,8 @@ class Command(BaseCommand):
         parser.add_argument('--title', type=str)
         parser.add_argument('--content', type=str)
     def handle(self, *args, **options):
-        post = Post.objects.create(title=options['title'], content=options['content'])
         try:
-            post.save()
+            post = Post.objects.create(title=options['title'], content=options['content'])
         except Exception as e:
             self.stdout.write(self.style.WARNING(f'Ошибка при добавлении статьи - {e}'))
             return
