@@ -25,6 +25,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     views_count = models.PositiveIntegerField(default=0, verbose_name='Количество просмотров')
+    objects = models.Manager()
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
