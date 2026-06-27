@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Вход — {{ block.super }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-5">
+      <div class="bg-white p-5 rounded border shadow-sm">
+        <!-- Ссылка на возврат назад -->
+        <a href="{% url 'blog:index_page' %}" class="text-decoration-none text-muted small">&larr; На главную</a>
+
+        <header class="mt-3 mb-4 text-center">
+          <h1 class="h3 fw-bold text-dark">Вход в аккаунт</h1>
+          <p class="text-muted mb-0">Введите имя пользователя и пароль.</p>
+        </header>
+
+        <hr class="my-4">
+
+        <!-- Ошибка авторизации (неверный логин/пароль) -->
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger border-0 shadow-sm" role="alert">
+            {% for error in form.non_field_errors %}
+              <div>{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div class="mb-4">
+              <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                {{ field.label }}
+              </label>
+
+              {{ field }}
+
+              {% if field.help_text %}
+                <div class="form-text">{{ field.help_text|safe }}</div>
+              {% endif %}
+
+              {% for error in field.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <!-- Сохраняем адрес, на который пользователь шёл до входа -->
+          <input type="hidden" name="next" value="{{ next }}">
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-dark btn-lg">Войти</button>
+            <a href="{% url 'blog:index_page' %}" class="btn btn-outline-dark">Отмена</a>
+          </div>
+        </form>
+
+        <hr class="my-4">
+
+        <p class="text-center text-muted mb-0">
+          Нет аккаунта?
+          <a href="{% url 'users:register' %}" class="text-decoration-none fw-semibold">Зарегистрироваться</a>
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
