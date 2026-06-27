@@ -25,3 +25,7 @@ class ProfileUpdateView(UpdateView):
             user=self.request.user
         )
         return profile
+
+
+class RegisterView:
+    pass
